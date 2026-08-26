@@ -1,6 +1,6 @@
-import { getScholarMetrics } from '@/lib/scholar';
+import { getScholarMetrics, type ScholarSource } from '@/lib/scholar';
 import { PAPERS } from '@/lib/publications';
-import { LINKS } from '@/lib/site';
+import { LINKS, PROFILE } from '@/lib/site';
 
 interface Stat {
   value: string | number;
@@ -12,8 +12,27 @@ interface Stat {
  * Rendered on the server and revalidated on the page's ISR cadence, so the
  * numbers track the profile without a redeploy.
  */
+/**
+ * Name the source the numbers actually came from. Scholar blocks datacenter
+ * IPs, so a deployment without SERPAPI_API_KEY falls back to OpenAlex — whose
+ * counts are lower because it indexes fewer venues. Crediting Scholar for
+ * OpenAlex figures would misstate where the data came from.
+ */
+function attributionFor(source: ScholarSource, scholarUrl: string) {
+  switch (source) {
+    case 'serpapi':
+    case 'scholar':
+      return { name: 'Google Scholar', href: scholarUrl };
+    case 'openalex':
+      return { name: 'OpenAlex', href: `https://openalex.org/works?filter=author.orcid:${PROFILE.orcid}` };
+    case 'snapshot':
+      return { name: 'Google Scholar', href: scholarUrl };
+  }
+}
+
 export async function ScholarStats() {
   const metrics = await getScholarMetrics();
+  const attribution = attributionFor(metrics.source, LINKS.scholar);
 
   const stats: Stat[] = [
     { value: PAPERS.length, label: 'Publications & preprints' },
@@ -41,12 +60,12 @@ export async function ScholarStats() {
         <p className="mt-8 text-center text-xs text-fg-muted">
           Citation metrics from{' '}
           <a
-            href={LINKS.scholar}
+            href={attribution.href}
             target="_blank"
             rel="noopener noreferrer"
             className="text-accent hover:text-[#2550E6] transition-colors"
           >
-            Google Scholar
+            {attribution.name}
           </a>
           , updated{' '}
           <time dateTime={metrics.fetchedAt}>
