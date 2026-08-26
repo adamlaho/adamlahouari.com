@@ -1,0 +1,375 @@
+@import 'tailwindcss' source(none);
+@source '../app/**/*.{js,ts,jsx,tsx}';
+@source '../components/**/*.{js,ts,jsx,tsx}';
+
+@import 'tw-animate-css';
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Base size */
+  --font-size: 16px;
+
+  /* Color tokens - Light mode */
+  --bg: #FBFAF7;
+  --bg-elev: #FFFFFF;
+  --fg: #111111;
+  --fg-muted: #5B5B5B;
+  --border: #E7E4DC;
+  --accent: #2E5BFF;
+  --accent-soft: #E7EDFF;
+
+  /* Theme accents (research areas) */
+  --theme-mlips: #3B82F6;
+  --theme-cryst: #8B5CF6;
+  --theme-proton: #14B8A6;
+  --theme-amlp: #F97316;
+
+  /* Spacing - 4px base */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  /* Radii */
+  --radius-0: 0;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-full: 999px;
+
+  /* Shadow */
+  --shadow: 0 1px 2px rgba(0,0,0,.04), 0 4px 12px rgba(0,0,0,.06);
+
+  /* Font weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  /* Container widths */
+  --container-prose: 42.5rem;
+  --container-default: 68.75rem;
+  --container-wide: 80rem;
+
+  /* Focus ring */
+  --ring: var(--accent);
+}
+
+.dark {
+  --bg: #0B0B0C;
+  --bg-elev: #18181A;
+  --fg: #F5F4F1;
+  --fg-muted: #A1A1A8;
+  --border: #2D2D30;
+  --accent: #5B7FFF;
+  --accent-soft: #1E2B4F;
+
+  /* Desaturated theme accents for dark mode */
+  --theme-mlips: #5E9FFF;
+  --theme-cryst: #A78BFA;
+  --theme-proton: #2DD4BF;
+  --theme-amlp: #FB923C;
+}
+
+/* Type scale - modular 1.25. Declared here (not in :root) so Tailwind v4
+   registers them in its font-size namespace and emits text-sm … text-5xl. */
+@theme {
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5625rem;
+  --text-2xl: 1.953125rem;
+  --text-3xl: 2.44140625rem;
+  --text-4xl: 3.0517578125rem;
+  --text-5xl: 3.814697265625rem;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-elev: var(--bg-elev);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-theme-mlips: var(--theme-mlips);
+  --color-theme-cryst: var(--theme-cryst);
+  --color-theme-proton: var(--theme-proton);
+  --color-theme-amlp: var(--theme-amlp);
+  --color-ring: var(--ring);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-bg text-fg;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-feature-settings: 'cv11' 1, 'ss03' 1;
+  }
+
+  html {
+    font-size: var(--font-size);
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+    font-weight: var(--font-weight-semibold);
+  }
+
+  article, .prose {
+    font-family: 'Source Serif 4', Georgia, serif;
+  }
+
+  code, pre, .mono {
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+  }
+}
+
+@layer utilities {
+  /*
+   * Display serif. Use this class rather than an inline
+   * style={{ fontFamily: 'Source Serif 4, Georgia, serif' }} — unquoted, the
+   * "4" is not a valid CSS identifier, so the browser drops the whole
+   * declaration and the serif never applies.
+   */
+  .font-serif-display {
+    font-family: 'Source Serif 4', Georgia, serif;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .line-clamp-6 {
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* Print Styles */
+@media print {
+  @page {
+    /* No `size` declaration, so the browser honours the user's Letter/A4 choice. */
+    margin: 14mm 15mm;
+  }
+
+  /*
+   * The nav is position:fixed, so without this it repaints on top of every
+   * printed page. The previous rule here was written `.print\\:hidden` — a
+   * doubled backslash, which CSS parses as `.print\` plus an unknown `:hidden`
+   * pseudo-class. That invalidates the whole selector list, so `nav` and
+   * `footer` were never hidden either. Escaped selectors are avoided here;
+   * Tailwind generates its own `print:hidden` utility.
+   */
+  nav,
+  footer {
+    display: none !important;
+  }
+
+  /* Controls do nothing on paper — search boxes, filter chips, tab strips. */
+  button,
+  input,
+  select,
+  textarea {
+    display: none !important;
+  }
+
+  html {
+    background: #fff;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+    font-family: 'Source Serif 4', Georgia, serif;
+  }
+
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Nothing on paper should be a coloured chip or a dark card. */
+  main,
+  section,
+  article,
+  div,
+  header,
+  aside {
+    background: transparent !important;
+  }
+
+  a {
+    color: #000;
+    text-decoration: none;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid;
+    color: #000;
+  }
+
+  .print\:break-inside-avoid,
+  figure,
+  li {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* ---------------------------------------------------------------------
+   * CV document styling
+   *
+   * The screen type scale (text-5xl ≈ 61px) is far too large for print, so
+   * every size is restated in points. Selectors are `.cv-page <element>`
+   * (specificity 0,1,1) which outranks the Tailwind utility classes on those
+   * elements (0,1,0) without needing !important.
+   * ------------------------------------------------------------------- */
+  .cv-page {
+    padding: 0 !important;
+    font-size: 9.75pt;
+    line-height: 1.4;
+    color: #000;
+  }
+
+  /* Strip the on-screen page and container padding. */
+  .cv-page > div {
+    max-width: none !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .cv-page header {
+    margin: 0 0 10pt !important;
+    padding: 0 0 7pt !important;
+    border-bottom: 1pt solid #000 !important;
+  }
+
+  /* Contact details are a tight block under the name, not a spaced stack. */
+  .cv-page header .space-y-2 > * + * {
+    margin-top: 1pt !important;
+  }
+
+  .cv-page header .items-center {
+    gap: 0 !important;
+  }
+
+  .cv-page h1 {
+    font-size: 19pt;
+    line-height: 1.1;
+    margin: 0 0 5pt !important;
+    letter-spacing: -0.01em;
+  }
+
+  .cv-page h2 {
+    font-size: 10.5pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin: 13pt 0 5pt !important;
+    padding: 0 0 2pt !important;
+    border-bottom: 0.75pt solid #000 !important;
+  }
+
+  .cv-page h3 {
+    font-size: 9.75pt;
+    font-weight: 700;
+    margin: 0 0 1pt !important;
+  }
+
+  .cv-page section {
+    margin: 0 0 10pt !important;
+  }
+
+  .cv-page p,
+  .cv-page li,
+  .cv-page span,
+  .cv-page div {
+    font-size: inherit;
+    color: #000;
+  }
+
+  /* Tailwind's space-y-* uses margin-top on siblings; tighten for paper. */
+  .cv-page .space-y-4 > * + *,
+  .cv-page .space-y-3 > * + * {
+    margin-top: 5pt !important;
+  }
+  .cv-page .space-y-2 > * + * {
+    margin-top: 2pt !important;
+  }
+
+  /* Contact line: run the links together instead of stacking them. */
+  .cv-page header .flex-wrap {
+    gap: 0 12pt !important;
+    margin-top: 3pt !important;
+  }
+
+  /* Numbered publication list. */
+  .cv-page ol {
+    margin: 0 !important;
+    padding-left: 13pt !important;
+  }
+  .cv-page ol > li {
+    margin: 0 0 4pt !important;
+    padding-left: 2pt;
+  }
+
+  /*
+   * Printed URLs sit quieter than the surrounding text. `overflow-wrap` rather
+   * than `word-break: break-all` so a URL moves to the next line intact when
+   * it fits, and only splits when it genuinely cannot.
+   */
+  .cv-page .cv-url {
+    font-size: 8.25pt;
+    color: #333;
+    overflow-wrap: break-word;
+  }
+
+  .cv-page em,
+  .cv-page i {
+    font-style: italic;
+  }
+}
