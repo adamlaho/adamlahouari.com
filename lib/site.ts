@@ -4,7 +4,17 @@
  * hard-coding URLs, so there is exactly one place to update.
  */
 
-export const SITE_URL = 'https://adamlahouari.com';
+/**
+ * Canonical origin — feeds metadataBase, the sitemap, robots.txt and the
+ * schema.org JSON-LD.
+ *
+ * Override per-deployment with NEXT_PUBLIC_SITE_URL (set it in Vercel's
+ * environment variables) so moving between a *.vercel.app URL and the real
+ * domain needs no code change. Delete that variable once adamlahouari.com
+ * is live and this default takes over again.
+ */
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://adamlahouari.com';
 
 export const PROFILE = {
   name: 'Adam Lahouari',
