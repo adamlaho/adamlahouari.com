@@ -36,19 +36,49 @@ export const metadata: Metadata = {
 const personJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
+  '@id': `${SITE_URL}/#person`,
   name: PROFILE.name,
+  givenName: 'Adam',
+  familyName: 'Lahouari',
   jobTitle: PROFILE.jobTitle,
   email: PROFILE.email,
+  description:
+    'Postdoctoral researcher at NYU Chemistry developing machine-learned interatomic potentials for molecular crystals and reactive force fields for metallic nanoparticles.',
+  // Google uses `image` when deciding what to show alongside a person result.
+  ...(PROFILE.portrait ? { image: `${SITE_URL}${PROFILE.portrait}` } : {}),
   affiliation: [
     {
       '@type': 'Organization',
       name: 'New York University, Department of Chemistry',
+      url: 'https://as.nyu.edu/chemistry.html',
     },
   ],
-  alumniOf: [{ '@type': 'Organization', name: 'Sorbonne Université' }],
+  alumniOf: [
+    { '@type': 'CollegeOrUniversity', name: 'Sorbonne Université' },
+    { '@type': 'CollegeOrUniversity', name: 'Université de Lille' },
+    { '@type': 'CollegeOrUniversity', name: 'Jagiellonian University' },
+  ],
+  knowsAbout: [
+    'Machine-learned interatomic potentials',
+    'Molecular dynamics',
+    'Density functional theory',
+    'Molecular crystal polymorphism',
+    'Computational chemistry',
+  ],
   identifier: LINKS.orcid,
   url: SITE_URL,
-  sameAs: [LINKS.orcid, LINKS.scholar, LINKS.github, LINKS.linkedin, LINKS.groupPage],
+  mainEntityOfPage: SITE_URL,
+  // `sameAs` is the strongest signal tying this site to the profiles that
+  // already rank for the name — ORCID, Scholar, the NYU group page.
+  sameAs: [
+    LINKS.orcid,
+    LINKS.scholar,
+    LINKS.github,
+    LINKS.linkedin,
+    LINKS.twitter,
+    LINKS.groupPage,
+    'https://www.researchgate.net/profile/Adam-Lahouari',
+  ],
 };
 
 export default function RootLayout({

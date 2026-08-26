@@ -13,8 +13,19 @@
  * domain needs no code change. Delete that variable once adamlahouari.com
  * is live and this default takes over again.
  */
-export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://adamlahouari.com';
+export const SITE_URL = normalizeOrigin(
+  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://adamlahouari.com',
+);
+
+/**
+ * Environment variables pasted through a browser field routinely pick up stray
+ * whitespace or a trailing slash. Left alone, that whitespace ends up inside
+ * every <loc> in the sitemap and in the JSON-LD `url`, which is exactly what
+ * crawlers parse.
+ */
+function normalizeOrigin(value: string): string {
+  return value.trim().replace(/\/+$/, '');
+}
 
 export const PROFILE = {
   name: 'Adam Lahouari',
